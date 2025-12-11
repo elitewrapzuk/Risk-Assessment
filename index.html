@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Elite Wrapz | Mobile RAMS</title>
+    <title>Elite Wrapz | RAMS Tool</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     
     <style>
-        /* --- MOBILE FIRST CSS --- */
+        /* --- PROFESSIONAL DARK THEME --- */
         :root {
-            --brand-red: #d32f2f;
-            --brand-dark: #b71c1c;
-            --bg-color: #f4f7f6;
+            --brand-primary: #222222; /* Jet Black / Dark Charcoal */
+            --brand-secondary: #444444;
+            --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --text-main: #333333;
             --border-color: #e0e0e0;
@@ -24,22 +24,21 @@
             color: var(--text-main);
             margin: 0;
             padding: 15px;
-            padding-bottom: 40px; /* Space for scroll */
+            padding-bottom: 50px;
         }
 
-        /* Container */
         .app-container {
-            max-width: 600px; /* Limits width on desktop/tablets */
+            max-width: 600px;
             margin: 0 auto;
         }
 
-        /* Headers */
         h1 {
-            color: var(--brand-red);
+            color: var(--brand-primary);
             font-size: 1.8rem;
             margin-bottom: 5px;
             text-align: center;
             letter-spacing: -0.5px;
+            text-transform: uppercase;
         }
         
         .subtitle {
@@ -50,62 +49,66 @@
         }
 
         h2 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #444;
-            border-left: 5px solid var(--brand-red);
+            border-left: 5px solid var(--brand-primary);
             padding-left: 12px;
             margin-top: 30px;
             margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Form Elements */
+        /* Card Styling */
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             margin-bottom: 15px;
+            border: 1px solid #eee;
         }
 
         label {
             display: block;
-            font-weight: 600;
-            font-size: 0.95rem;
+            font-weight: 700;
+            font-size: 0.85rem;
             margin-bottom: 8px;
             color: #555;
+            text-transform: uppercase;
         }
 
         input[type="text"], input[type="date"], textarea, select {
             width: 100%;
-            padding: 14px; /* Big touch targets */
+            padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px; /* Prevents zooming on iPhone */
+            border-radius: 6px;
+            font-size: 16px;
             box-sizing: border-box;
             background: #fafafa;
-            -webkit-appearance: none; /* Removes default iOS styling */
+            -webkit-appearance: none;
+            color: #333;
         }
 
         input:focus, textarea:focus, select:focus {
-            border-color: var(--brand-red);
+            border-color: var(--brand-primary);
             background: #fff;
             outline: none;
         }
 
         textarea {
-            min-height: 120px;
+            min-height: 100px;
             line-height: 1.4;
             resize: vertical;
         }
 
-        /* Risk Cards Specifics */
+        /* Risk Cards */
         .risk-card {
             border: 1px solid var(--border-color);
             background: white;
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 15px;
-            margin-bottom: 20px;
-            transition: transform 0.2s;
+            margin-bottom: 15px;
         }
         
         .risk-header {
@@ -114,125 +117,95 @@
             margin-bottom: 10px;
         }
 
-        /* Custom Checkbox */
         .risk-checkbox {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             margin-right: 15px;
-            accent-color: var(--brand-red);
+            accent-color: var(--brand-primary);
             cursor: pointer;
         }
 
         .risk-title {
             font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--brand-red);
+            font-size: 1rem;
+            color: var(--brand-primary);
         }
 
         .risk-hazard {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #666;
             font-style: italic;
             margin-bottom: 12px;
-            line-height: 1.3;
-        }
-
-        .risk-controls {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-        }
-        
-        .risk-controls label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #888;
         }
 
         .score-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .score-box {
-            background: #f0f0f0;
-            padding: 10px;
-            border-radius: 8px;
+            background: #f4f4f4;
+            padding: 8px;
+            border-radius: 6px;
             text-align: center;
         }
 
         .score-label {
             display: block;
-            font-size: 0.75rem;
-            color: #666;
-            margin-bottom: 5px;
+            font-size: 0.7rem;
+            color: #777;
+            margin-bottom: 4px;
             font-weight: bold;
         }
 
         .fixed-score {
             font-weight: bold;
-            font-size: 1.1rem;
-            color: #333;
-            padding: 5px 0;
+            font-size: 1rem;
+            color: #222;
         }
 
-        select.score-select {
-            padding: 8px;
-            font-weight: bold;
-            color: var(--text-main);
-            text-align: center;
-            background: white;
+        /* SIGNATURE CANVAS STYLES */
+        .signature-pad {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            width: 100%;
+            height: 180px;
+            background: #fff;
+            touch-action: none; /* Prevents scrolling while signing */
+        }
+        .clear-btn {
+            background: #eee;
+            color: #555;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            cursor: pointer;
         }
 
-        /* Main Action Button */
+        /* Main Button */
         .generate-btn {
-            background-color: var(--brand-red);
+            background-color: var(--brand-primary);
             color: white;
             width: 100%;
             padding: 18px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             border: none;
-            border-radius: 50px; /* Pill shape */
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
-            margin-top: 20px;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .generate-btn:active {
-            transform: scale(0.98);
-            background-color: var(--brand-dark);
-        }
-
-        /* Footer / Compliance */
-        .compliance-box {
-            margin-top: 30px;
-            padding: 15px;
-            background: #e8f5e9;
-            border: 1px solid #c8e6c9;
             border-radius: 8px;
-            display: flex;
-            align-items: flex-start;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-
-        .compliance-box input {
-            width: 24px;
-            height: 24px;
-            margin-right: 15px;
-            margin-top: 0;
-            accent-color: #2e7d32;
-        }
-
-        .compliance-text {
-            font-size: 0.9rem;
-            color: #2e7d32;
-            font-weight: 600;
-            line-height: 1.4;
+        
+        .generate-btn:active {
+            transform: translateY(2px);
+            background-color: black;
         }
 
     </style>
@@ -242,17 +215,17 @@
 <div class="app-container">
     
     <h1>Elite Wrapz</h1>
-    <p class="subtitle">Mobile RAMS Generator</p>
+    <p class="subtitle">RAMS Generator & Sign Off</p>
 
     <h2>1. Job Details</h2>
     <div class="card">
         <div style="margin-bottom: 15px;">
             <label>Client Name</label>
-            <input type="text" id="clientName" placeholder="e.g. Starbucks">
+            <input type="text" id="clientName" placeholder="e.g. Site Manager">
         </div>
         <div style="margin-bottom: 15px;">
             <label>Project Ref</label>
-            <input type="text" id="projectRef" placeholder="e.g. EW-25-001">
+            <input type="text" id="projectRef" placeholder="e.g. EW-001">
         </div>
         <div style="margin-bottom: 15px;">
             <label>Site Address</label>
@@ -267,7 +240,6 @@
     <h2>2. Method Statement</h2>
     <div class="card">
         <label>Sequence of Work</label>
-        <p style="font-size:0.8rem; color:#666; margin-top:-5px; margin-bottom:10px;">Review and edit this list to match your plan.</p>
         <textarea id="methodStatement">1. Arrival: Sign in. Inspect area.
 2. Setup: Cordon off workspace. Protect floors.
 3. Prep: Clean surfaces with IPA. Ensure ventilation.
@@ -277,79 +249,97 @@
     </div>
 
     <h2>3. Risk Assessment</h2>
-    <p style="font-size:0.9rem; color:#555; margin-bottom:15px;">Uncheck any risks that don't apply.</p>
-    <div id="riskList">
-        </div>
+    <div id="riskList"></div>
 
     <h2>4. Sign Off</h2>
     <div class="card">
-        <div class="compliance-box">
-            <input type="checkbox" id="coshhCheck" checked>
-            <div class="compliance-text">
-                Confirm COSHH Safety Data Sheets (SDS) are available for all solvents.
-            </div>
+        <div style="margin-bottom: 20px;">
+            <input type="checkbox" id="coshhCheck" checked style="transform: scale(1.3); margin-right: 10px;">
+            <span style="font-size: 0.9rem; font-weight: 600; color: #444;">COSHH: SDS available for solvents.</span>
         </div>
         
-        <div style="margin-top: 20px;">
+        <div style="margin-bottom: 20px;">
             <label>Assessor Name</label>
             <input type="text" id="assessorName" value="Richard Yates">
         </div>
+
+        <label>Signature (Sign Below)</label>
+        <canvas id="sigCanvas" class="signature-pad"></canvas>
+        <button class="clear-btn" onclick="clearSignature()">Clear Signature</button>
     </div>
 
-    <button class="generate-btn" onclick="generatePDF()">Download PDF</button>
-    <div style="height: 50px;"></div> </div>
+    <button class="generate-btn" onclick="generatePDF()">Generate & Sign PDF</button>
+
+</div>
 
 <script>
-    // Set today's date automatically
+    // --- 1. SETUP DATE ---
     document.getElementById('assessmentDate').valueAsDate = new Date();
 
-    // Risk Data (Fixed Severity, User selects Likelihood)
+    // --- 2. SIGNATURE PAD LOGIC ---
+    const canvas = document.getElementById('sigCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    // Resize canvas for better resolution
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        ctx.scale(ratio, ratio);
+    }
+    window.addEventListener("resize", resizeCanvas);
+    setTimeout(resizeCanvas, 100); // Initial resize
+
+    // Draw functions
+    function startDraw(e) {
+        isDrawing = true;
+        ctx.beginPath();
+        const { x, y } = getPos(e);
+        ctx.moveTo(x, y);
+    }
+    function draw(e) {
+        if (!isDrawing) return;
+        e.preventDefault(); // Stop scrolling while drawing
+        const { x, y } = getPos(e);
+        ctx.lineTo(x, y);
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.stroke();
+    }
+    function stopDraw() { isDrawing = false; }
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    // Event Listeners (Touch & Mouse)
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDraw);
+    canvas.addEventListener('touchstart', startDraw, {passive: false});
+    canvas.addEventListener('touchmove', draw, {passive: false});
+    canvas.addEventListener('touchend', stopDraw);
+
+    function clearSignature() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // --- 3. RISK DATA ---
     const risks = [
-        {
-            title: "Damage to Property",
-            hazard: "Cuts to surfaces, Heat damage, Adhesive residue",
-            fixedS: 3, 
-            mitigation: "Strict use of cutting mats. Knifeless tape used for surface cuts. Low-tack masking tape used."
-        },
-        {
-            title: "Public Safety",
-            hazard: "Injury to third parties from tools/chemicals",
-            fixedS: 3, 
-            mitigation: "Work area cordoned off. Blades never left unattended. Chemicals stored securely."
-        },
-        {
-            title: "Electrical Fixtures",
-            hazard: "Electric shock from sockets",
-            fixedS: 3, 
-            mitigation: "Visual check. Non-conductive tools. Power isolated if faceplates removed."
-        },
-        {
-            title: "Site Access / Loading",
-            hazard: "Collision, Blocking Exits",
-            fixedS: 2, 
-            mitigation: "Park in designated bay. Hazard lights on. Walkways kept clear."
-        },
-        {
-            title: "Heat Guns",
-            hazard: "Fire risk, Burns",
-            fixedS: 2, 
-            mitigation: "Heat gun on stand (never on carpet). Fire extinguisher nearby."
-        },
-        {
-            title: "Sharp Tools",
-            hazard: "Cuts/Lacerations",
-            fixedS: 2, 
-            mitigation: "Retractable blades only. Sharps bin used. Snap-off away from body."
-        },
-        {
-            title: "Solvents (COSHH)",
-            hazard: "Fumes, Skin irritation",
-            fixedS: 1, 
-            mitigation: "Ventilation ensured. Nitrile gloves worn. Minimal quantities used."
-        }
+        { title: "Damage to Property", hazard: "Cuts to surfaces, Heat damage", fixedS: 3, mitigation: "Strict use of cutting mats. Knifeless tape used for surface cuts. Low-tack masking tape used." },
+        { title: "Public Safety", hazard: "Injury to third parties", fixedS: 3, mitigation: "Work area cordoned off. Blades never left unattended. Chemicals stored securely." },
+        { title: "Electrical Fixtures", hazard: "Electric shock from sockets", fixedS: 3, mitigation: "Visual check. Non-conductive tools. Power isolated if faceplates removed." },
+        { title: "Site Access / Loading", hazard: "Collision, Blocking Exits", fixedS: 2, mitigation: "Park in designated bay. Hazard lights on. Walkways kept clear." },
+        { title: "Heat Guns", hazard: "Fire risk, Burns", fixedS: 2, mitigation: "Heat gun on stand (never on carpet). Fire extinguisher nearby." },
+        { title: "Sharp Tools", hazard: "Cuts/Lacerations", fixedS: 2, mitigation: "Retractable blades only. Sharps bin used. Snap-off away from body." },
+        { title: "Solvents (COSHH)", hazard: "Fumes, Skin irritation", fixedS: 1, mitigation: "Ventilation ensured. Nitrile gloves worn. Minimal quantities used." }
     ];
 
-    // Render Risk Cards
+    // Render Risks
     const riskContainer = document.getElementById('riskList');
     risks.forEach((risk, index) => {
         const card = document.createElement('div');
@@ -360,50 +350,42 @@
                 <div class="risk-title">${risk.title}</div>
             </div>
             <div class="risk-hazard">${risk.hazard}</div>
-            
-            <div class="risk-controls">
-                <label>Mitigation (Control Measures)</label>
-                <textarea id="mitigation-${index}" style="min-height:80px; padding:10px;">${risk.mitigation}</textarea>
+            <div style="margin-bottom:10px;">
+                <label style="font-size:0.7rem;">Control Measures</label>
+                <textarea id="mitigation-${index}" style="min-height:60px; font-size:0.9rem;">${risk.mitigation}</textarea>
             </div>
-
             <div class="score-grid">
-                <div class="score-box">
-                    <span class="score-label">SEVERITY (Fixed)</span>
-                    <div class="fixed-score">${risk.fixedS}</div>
-                </div>
-                <div class="score-box">
-                    <span class="score-label">LIKELIHOOD</span>
-                    <select id="L-${index}" class="score-select">
+                <div class="score-box"><span class="score-label">SEVERITY (Fixed)</span><div class="fixed-score">${risk.fixedS}</div></div>
+                <div class="score-box"><span class="score-label">LIKELIHOOD</span>
+                    <select id="L-${index}" style="font-weight:bold; padding:5px;">
                         <option value="1">1 (Low)</option>
                         <option value="2">2 (Med)</option>
                         <option value="3">3 (High)</option>
                     </select>
                 </div>
-            </div>
-        `;
+            </div>`;
         riskContainer.appendChild(card);
     });
 
+    // --- 4. PDF GENERATION ---
     async function generatePDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        // Colors
-        const primaryColor = [211, 47, 47]; 
-        const greyColor = [80, 80, 80];
+        // COLORS (Grey/Black Theme)
+        const primaryColor = [40, 40, 40]; // Dark Grey
+        const accentColor = [220, 220, 220]; // Light Grey
 
-        // --- HEADER ---
-        doc.setFontSize(24); doc.setTextColor(...primaryColor); doc.setFont(undefined, 'bold');
+        // HEADER
+        doc.setFontSize(22); doc.setTextColor(...primaryColor); doc.setFont(undefined, 'bold');
         doc.text("ELITE WRAPZ", 14, 20);
-        
-        doc.setFontSize(10); doc.setTextColor(...greyColor);
+        doc.setFontSize(10); doc.setTextColor(80);
         doc.text("RAMS | Risk Assessment & Method Statement", 14, 26);
-        
         doc.setFontSize(9); doc.setFont(undefined, 'normal');
         doc.text("87 Parkhouse Drive, Birmingham, West Midlands", 14, 35);
         doc.text("07424 088434 | contact@elitewrapz.uk", 14, 40);
 
-        // --- JOB TABLE ---
+        // JOB DETAILS
         doc.autoTable({
             startY: 45,
             head: [['PROJECT DETAILS', '']],
@@ -414,27 +396,25 @@
                 ['Date', document.getElementById('assessmentDate').value]
             ],
             theme: 'grid',
-            headStyles: { fillColor: [50, 50, 50], textColor: 255, fontStyle: 'bold' },
+            headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold' },
             columnStyles: { 0: { fontStyle: 'bold', width: 40, fillColor: [245, 245, 245] } }
         });
 
-        // --- METHOD STATEMENT ---
+        // METHOD STATEMENT
         doc.setFontSize(11); doc.setTextColor(...primaryColor); doc.setFont(undefined, 'bold');
         doc.text("1. METHOD STATEMENT", 14, doc.lastAutoTable.finalY + 15);
         
         doc.setFontSize(10); doc.setTextColor(0); doc.setFont(undefined, 'normal');
         const methodText = document.getElementById('methodStatement').value;
         const splitMethod = doc.splitTextToSize(methodText, 180);
-        
-        // Background box for Method
         const boxHeight = (splitMethod.length * 5) + 6;
-        doc.setFillColor(248, 248, 248); doc.setDrawColor(220, 220, 220);
+        doc.setFillColor(250, 250, 250); doc.setDrawColor(200, 200, 200);
         doc.rect(14, doc.lastAutoTable.finalY + 18, 182, boxHeight, 'FD');
         doc.text(splitMethod, 17, doc.lastAutoTable.finalY + 23);
 
         let currentY = doc.lastAutoTable.finalY + 25 + boxHeight;
 
-        // --- RISK ASSESSMENT TABLE ---
+        // RISKS
         doc.setFontSize(11); doc.setTextColor(...primaryColor); doc.setFont(undefined, 'bold');
         doc.text("2. RISK ASSESSMENT", 14, currentY);
 
@@ -449,10 +429,7 @@
                 if(score >= 3) rating = "MED (" + score + ")";
                 if(score >= 6) rating = "HIGH (" + score + ")";
 
-                riskBody.push({ 
-                    content: [risk.title + "\n\nHazard: " + risk.hazard, L, S, rating, mit], 
-                    rawScore: score 
-                });
+                riskBody.push({ content: [risk.title + "\n(" + risk.hazard + ")", L, S, rating, mit], rawScore: score });
             }
         });
 
@@ -463,25 +440,23 @@
             theme: 'grid',
             headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold' },
             columnStyles: { 
-                0: { width: 50, fontSize: 9 }, 
-                1: { width: 10, halign: 'center', fontStyle:'bold' }, 
-                2: { width: 10, halign: 'center', fontStyle:'bold' }, 
-                3: { width: 22, halign: 'center', fontStyle:'bold' }, 
-                4: { width: 'auto', fontSize: 9 }
+                0: { width: 50, fontSize: 9 }, 1: { width: 10, halign:'center' }, 2: { width: 10, halign:'center' }, 
+                3: { width: 22, halign: 'center', fontStyle:'bold' }, 4: { width: 'auto', fontSize: 9 }
             },
             didParseCell: function(data) {
                 if (data.section === 'body' && data.column.index === 3) {
                     const score = riskBody[data.row.index].rawScore;
-                    if (score >= 6) data.cell.styles.fillColor = [255, 205, 210]; // Red
-                    else if (score >= 3) data.cell.styles.fillColor = [255, 249, 196]; // Yellow
-                    else data.cell.styles.fillColor = [220, 237, 200]; // Green
+                    // Colors: Pastel Green / Yellow / Red
+                    if (score >= 6) data.cell.styles.fillColor = [255, 205, 210]; 
+                    else if (score >= 3) data.cell.styles.fillColor = [255, 249, 196]; 
+                    else data.cell.styles.fillColor = [220, 237, 200]; 
                 }
             }
         });
 
-        // --- FOOTER ---
+        // FOOTER & SIGNATURE
         let finalY = doc.lastAutoTable.finalY + 10;
-        if (finalY > 220) { doc.addPage(); finalY = 20; }
+        if (finalY > 200) { doc.addPage(); finalY = 20; }
 
         if(document.getElementById('coshhCheck').checked) {
             doc.setFontSize(9); doc.setTextColor(0, 100, 0); doc.setFont(undefined, 'bold');
@@ -498,9 +473,15 @@
         });
 
         finalY = doc.lastAutoTable.finalY + 20;
+
+        // INSERT SIGNATURE IMAGE
+        const sigData = canvas.toDataURL('image/png');
+        // Only add signature if user has drawn something (crude check via canvas data size or just always add)
+        doc.addImage(sigData, 'PNG', 14, finalY - 15, 50, 25); // x, y, width, height
+        
         doc.setDrawColor(0); doc.line(14, finalY + 10, 80, finalY + 10);
-        doc.text(`Assessor: ${document.getElementById('assessorName').value}`, 14, finalY);
-        doc.text("Signature", 14, finalY + 15);
+        doc.text(`Assessor: ${document.getElementById('assessorName').value}`, 14, finalY + 15);
+        doc.text("Signature", 14, finalY + 20);
         
         doc.save(`RAMS_${document.getElementById('projectRef').value}.pdf`);
     }
