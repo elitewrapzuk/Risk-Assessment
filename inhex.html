@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Elite Wrapz | Mobile RAMS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    
+    <style>
+        /* --- MOBILE FIRST CSS --- */
+        :root {
+            --brand-red: #d32f2f;
+            --brand-dark: #b71c1c;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 40px; /* Space for scroll */
+        }
+
+        /* Container */
+        .app-container {
+            max-width: 600px; /* Limits width on desktop/tablets */
+            margin: 0 auto;
+        }
+
+        /* Headers */
+        h1 {
+            color: var(--brand-red);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: #444;
+            border-left: 5px solid var(--brand-red);
+            padding-left: 12px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* Form Elements */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"], textarea, select {
+            width: 100%;
+            padding: 14px; /* Big touch targets */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px; /* Prevents zooming on iPhone */
+            box-sizing: border-box;
+            background: #fafafa;
+            -webkit-appearance: none; /* Removes default iOS styling */
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--brand-red);
+            background: #fff;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 120px;
+            line-height: 1.4;
+            resize: vertical;
+        }
+
+        /* Risk Cards Specifics */
+        .risk-card {
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .risk-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        /* Custom Checkbox */
+        .risk-checkbox {
+            width: 28px;
+            height: 28px;
+            margin-right: 15px;
+            accent-color: var(--brand-red);
+            cursor: pointer;
+        }
+
+        .risk-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--brand-red);
+        }
+
+        .risk-hazard {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .risk-controls {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .risk-controls label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #888;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .score-box {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .score-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .fixed-score {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #333;
+            padding: 5px 0;
+        }
+
+        select.score-select {
+            padding: 8px;
+            font-weight: bold;
+            color: var(--text-main);
+            text-align: center;
+            background: white;
+        }
+
+        /* Main Action Button */
+        .generate-btn {
+            background-color: var(--brand-red);
+            color: white;
+            width: 100%;
+            padding: 18px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px; /* Pill shape */
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.3);
+            margin-top: 20px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .generate-btn:active {
+            transform: scale(0.98);
+            background-color: var(--brand-dark);
+        }
+
+        /* Footer / Compliance */
+        .compliance-box {
+            margin-top: 30px;
+            padding: 15px;
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .compliance-box input {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            margin-top: 0;
+            accent-color: #2e7d32;
+        }
+
+        .compliance-text {
+            font-size: 0.9rem;
+            color: #2e7d32;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <h1>Elite Wrapz</h1>
+    <p class="subtitle">Mobile RAMS Generator</p>
+
+    <h2>1. Job Details</h2>
+    <div class="card">
+        <div style="margin-bottom: 15px;">
+            <label>Client Name</label>
+            <input type="text" id="clientName" placeholder="e.g. Starbucks">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label>Project Ref</label>
+            <input type="text" id="projectRef" placeholder="e.g. EW-25-001">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label>Site Address</label>
+            <input type="text" id="siteAddress" placeholder="e.g. 12 High Street">
+        </div>
+        <div>
+            <label>Date</label>
+            <input type="date" id="assessmentDate">
+        </div>
+    </div>
+
+    <h2>2. Method Statement</h2>
+    <div class="card">
+        <label>Sequence of Work</label>
+        <p style="font-size:0.8rem; color:#666; margin-top:-5px; margin-bottom:10px;">Review and edit this list to match your plan.</p>
+        <textarea id="methodStatement">1. Arrival: Sign in. Inspect area.
+2. Setup: Cordon off workspace. Protect floors.
+3. Prep: Clean surfaces with IPA. Ensure ventilation.
+4. Install: Apply vinyl using knifeless tape.
+5. Finish: Post-heat edges. Quality check.
+6. Clear: Remove waste/sharps. Handover.</textarea>
+    </div>
+
+    <h2>3. Risk Assessment</h2>
+    <p style="font-size:0.9rem; color:#555; margin-bottom:15px;">Uncheck any risks that don't apply.</p>
+    <div id="riskList">
+        </div>
+
+    <h2>4. Sign Off</h2>
+    <div class="card">
+        <div class="compliance-box">
+            <input type="checkbox" id="coshhCheck" checked>
+            <div class="compliance-text">
+                Confirm COSHH Safety Data Sheets (SDS) are available for all solvents.
+            </div>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <label>Assessor Name</label>
+            <input type="text" id="assessorName" value="Richard Yates">
+        </div>
+    </div>
+
+    <button class="generate-btn" onclick="generatePDF()">Download PDF</button>
+    <div style="height: 50px;"></div> </div>
+
+<script>
+    // Set today's date automatically
+    document.getElementById('assessmentDate').valueAsDate = new Date();
+
+    // Risk Data (Fixed Severity, User selects Likelihood)
+    const risks = [
+        {
+            title: "Damage to Property",
+            hazard: "Cuts to surfaces, Heat damage, Adhesive residue",
+            fixedS: 3, 
+            mitigation: "Strict use of cutting mats. Knifeless tape used for surface cuts. Low-tack masking tape used."
+        },
+        {
+            title: "Public Safety",
+            hazard: "Injury to third parties from tools/chemicals",
+            fixedS: 3, 
+            mitigation: "Work area cordoned off. Blades never left unattended. Chemicals stored securely."
+        },
+        {
+            title: "Electrical Fixtures",
+            hazard: "Electric shock from sockets",
+            fixedS: 3, 
+            mitigation: "Visual check. Non-conductive tools. Power isolated if faceplates removed."
+        },
+        {
+            title: "Site Access / Loading",
+            hazard: "Collision, Blocking Exits",
+            fixedS: 2, 
+            mitigation: "Park in designated bay. Hazard lights on. Walkways kept clear."
+        },
+        {
+            title: "Heat Guns",
+            hazard: "Fire risk, Burns",
+            fixedS: 2, 
+            mitigation: "Heat gun on stand (never on carpet). Fire extinguisher nearby."
+        },
+        {
+            title: "Sharp Tools",
+            hazard: "Cuts/Lacerations",
+            fixedS: 2, 
+            mitigation: "Retractable blades only. Sharps bin used. Snap-off away from body."
+        },
+        {
+            title: "Solvents (COSHH)",
+            hazard: "Fumes, Skin irritation",
+            fixedS: 1, 
+            mitigation: "Ventilation ensured. Nitrile gloves worn. Minimal quantities used."
+        }
+    ];
+
+    // Render Risk Cards
+    const riskContainer = document.getElementById('riskList');
+    risks.forEach((risk, index) => {
+        const card = document.createElement('div');
+        card.className = 'risk-card';
+        card.innerHTML = `
+            <div class="risk-header">
+                <input type="checkbox" class="risk-checkbox" id="risk-${index}" checked>
+                <div class="risk-title">${risk.title}</div>
+            </div>
+            <div class="risk-hazard">${risk.hazard}</div>
+            
+            <div class="risk-controls">
+                <label>Mitigation (Control Measures)</label>
+                <textarea id="mitigation-${index}" style="min-height:80px; padding:10px;">${risk.mitigation}</textarea>
+            </div>
+
+            <div class="score-grid">
+                <div class="score-box">
+                    <span class="score-label">SEVERITY (Fixed)</span>
+                    <div class="fixed-score">${risk.fixedS}</div>
+                </div>
+                <div class="score-box">
+                    <span class="score-label">LIKELIHOOD</span>
+                    <select id="L-${index}" class="score-select">
+                        <option value="1">1 (Low)</option>
+                        <option value="2">2 (Med)</option>
+                        <option value="3">3 (High)</option>
+                    </select>
+                </div>
+            </div>
+        `;
+        riskContainer.appendChild(card);
+    });
+
+    async function generatePDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Colors
+        const primaryColor = [211, 47, 47]; 
+        const greyColor = [80, 80, 80];
+
+        // --- HEADER ---
+        doc.setFontSize(24); doc.setTextColor(...primaryColor); doc.setFont(undefined, 'bold');
+        doc.text("ELITE WRAPZ", 14, 20);
+        
+        doc.setFontSize(10); doc.setTextColor(...greyColor);
+        doc.text("RAMS | Risk Assessment & Method Statement", 14, 26);
+        
+        doc.setFontSize(9); doc.setFont(undefined, 'normal');
+        doc.text("87 Parkhouse Drive, Birmingham, West Midlands", 14, 35);
+        doc.text("07424 088434 | contact@elitewrapz.uk", 14, 40);
+
+        // --- JOB TABLE ---
+        doc.autoTable({
+            startY: 45,
+            head: [['PROJECT DETAILS', '']],
+            body: [
+                ['Client Name', document.getElementById('clientName').value],
+                ['Project Ref', document.getElementById('projectRef').value],
+                ['Site Address', document.getElementById('siteAddress').value],
+                ['Date', document.getElementById('assessmentDate').value]
+            ],
+            theme: 'grid',
+            headStyles: { fillColor: [50, 50, 50], textColor: 255, fontStyle: 'bold' },
+            columnStyles: { 0: { fontStyle: 'bold', width: 40, fillColor: [245, 245, 245] } }
+        });
+
+        // --- METHOD STATEMENT ---
+        doc.setFontSize(11); doc.setTextColor(...primaryColor); doc.setFont(undefined, 'bold');
+        doc.text("1. METHOD STATEMENT", 14, doc.lastAutoTable.finalY + 15);
+        
+        doc.setFontSize(10); doc.setTextColor(0); doc.setFont(undefined, 'normal');
+        const methodText = document.getElementById('methodStatement').value;
+        const splitMethod = doc.splitTextToSize(methodText, 180);
+        
+        // Background box for Method
+        const boxHeight = (splitMethod.length * 5) + 6;
+        doc.setFillColor(248, 248, 248); doc.setDrawColor(220, 220, 220);
+        doc.rect(14, doc.lastAutoTable.finalY + 18, 182, boxHeight, 'FD');
+        doc.text(splitMethod, 17, doc.lastAutoTable.finalY + 23);
+
+        let currentY = doc.lastAutoTable.finalY + 25 + boxHeight;
+
+        // --- RISK ASSESSMENT TABLE ---
+        doc.setFontSize(11); doc.setTextColor(...primaryColor); doc.setFont(undefined, 'bold');
+        doc.text("2. RISK ASSESSMENT", 14, currentY);
+
+        let riskBody = [];
+        risks.forEach((risk, index) => {
+            if (document.getElementById(`risk-${index}`).checked) {
+                const mit = document.getElementById(`mitigation-${index}`).value;
+                const L = parseInt(document.getElementById(`L-${index}`).value);
+                const S = risk.fixedS;
+                const score = L * S;
+                let rating = "LOW (" + score + ")";
+                if(score >= 3) rating = "MED (" + score + ")";
+                if(score >= 6) rating = "HIGH (" + score + ")";
+
+                riskBody.push({ 
+                    content: [risk.title + "\n\nHazard: " + risk.hazard, L, S, rating, mit], 
+                    rawScore: score 
+                });
+            }
+        });
+
+        doc.autoTable({
+            startY: currentY + 5,
+            head: [['HAZARD / ACTIVITY', 'L', 'S', 'RATING', 'CONTROL MEASURES']],
+            body: riskBody.map(r => r.content),
+            theme: 'grid',
+            headStyles: { fillColor: primaryColor, textColor: 255, fontStyle: 'bold' },
+            columnStyles: { 
+                0: { width: 50, fontSize: 9 }, 
+                1: { width: 10, halign: 'center', fontStyle:'bold' }, 
+                2: { width: 10, halign: 'center', fontStyle:'bold' }, 
+                3: { width: 22, halign: 'center', fontStyle:'bold' }, 
+                4: { width: 'auto', fontSize: 9 }
+            },
+            didParseCell: function(data) {
+                if (data.section === 'body' && data.column.index === 3) {
+                    const score = riskBody[data.row.index].rawScore;
+                    if (score >= 6) data.cell.styles.fillColor = [255, 205, 210]; // Red
+                    else if (score >= 3) data.cell.styles.fillColor = [255, 249, 196]; // Yellow
+                    else data.cell.styles.fillColor = [220, 237, 200]; // Green
+                }
+            }
+        });
+
+        // --- FOOTER ---
+        let finalY = doc.lastAutoTable.finalY + 10;
+        if (finalY > 220) { doc.addPage(); finalY = 20; }
+
+        if(document.getElementById('coshhCheck').checked) {
+            doc.setFontSize(9); doc.setTextColor(0, 100, 0); doc.setFont(undefined, 'bold');
+            doc.text("☑ COSHH COMPLIANCE: SDS available for all chemical agents used.", 14, finalY);
+            finalY += 10;
+        }
+
+        doc.setFontSize(10); doc.setTextColor(0); doc.text("Risk Matrix Key:", 14, finalY);
+        doc.autoTable({
+            startY: finalY + 2,
+            head: [['Score', 'Risk', 'Action']],
+            body: [['1-2', 'LOW', 'Monitor'], ['3-4', 'MED', 'Mitigate'], ['6-9', 'HIGH', 'Stop Work']],
+            theme: 'grid', headStyles: { fillColor: [80, 80, 80] }, styles: { fontSize: 8 }
+        });
+
+        finalY = doc.lastAutoTable.finalY + 20;
+        doc.setDrawColor(0); doc.line(14, finalY + 10, 80, finalY + 10);
+        doc.text(`Assessor: ${document.getElementById('assessorName').value}`, 14, finalY);
+        doc.text("Signature", 14, finalY + 15);
+        
+        doc.save(`RAMS_${document.getElementById('projectRef').value}.pdf`);
+    }
+</script>
+
+</body>
+</html>
